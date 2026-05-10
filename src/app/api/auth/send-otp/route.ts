@@ -1,8 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-// In-memory OTP store (in production, use Redis or database)
-// Format: { email: { code: string, expiresAt: number } }
-const otpStore = new Map<string, { code: string; expiresAt: number }>();
+// In-memory OTP store - shared via global scope for serverless
+// In production, use Redis or database
+declare global {
+  var otpStore: Map<string, { code: string; expiresAt: number }> | undefined;
+}
+
+if (!global.otpStore) {
+  global.otpStore = new Map<string, { code: string; expiresAt: number }>();
+}
+
+export const otpStore = global.otpStore;
 
 function generateOTP(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -56,7 +64,7 @@ export async function POST(req: NextRequest) {
                 This code expires in 10 minutes. If you didn't request this, ignore this email.
               </p>
               <p style="color: #999; font-size: 12px; text-align: center; margin-top: 40px;">
-                Made with ❤️ by P.o.Riot🍄
+                Made with &#10084;&#65039; by P.o.Riot&#127812;
               </p>
             </div>
           `,
@@ -87,6 +95,3 @@ export async function POST(req: NextRequest) {
     );
   }
 }
-
-// Export for use in verify-otp route
-export { otpStore };
