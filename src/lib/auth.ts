@@ -53,7 +53,17 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async signIn({ user, account, profile }) {
+      // Allow all sign-ins
+      return true;
+    },
+    async redirect({ url, baseUrl }) {
+      // After sign-in, always redirect to homepage
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
       }
@@ -68,7 +78,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin',
-    newUser: '/auth/signup',
   },
+  debug: process.env.NODE_ENV === 'development',
   secret: process.env.NEXTAUTH_SECRET,
 };
