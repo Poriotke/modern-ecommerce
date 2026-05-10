@@ -1,15 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-// Access the same global OTP store
-declare global {
-  var otpStore: Map<string, { code: string; expiresAt: number }> | undefined;
-}
-
-if (!global.otpStore) {
-  global.otpStore = new Map<string, { code: string; expiresAt: number }>();
-}
-
-const otpStore = global.otpStore;
+import { otpStore } from '@/lib/otp-store';
 
 export async function POST(req: NextRequest) {
   try {

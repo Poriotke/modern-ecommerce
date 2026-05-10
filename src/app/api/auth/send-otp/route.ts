@@ -1,16 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-// In-memory OTP store - shared via global scope for serverless
-// In production, use Redis or database
-declare global {
-  var otpStore: Map<string, { code: string; expiresAt: number }> | undefined;
-}
-
-if (!global.otpStore) {
-  global.otpStore = new Map<string, { code: string; expiresAt: number }>();
-}
-
-export const otpStore = global.otpStore;
+import { otpStore } from '@/lib/otp-store';
 
 function generateOTP(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -79,7 +68,6 @@ export async function POST(req: NextRequest) {
         );
       }
     } else {
-      // No API key - log OTP for testing
       console.log(`[DEV] OTP for ${email}: ${otp}`);
     }
 
