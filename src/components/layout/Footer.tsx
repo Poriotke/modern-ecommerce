@@ -52,7 +52,14 @@ export default function Footer() {
                 <span className="text-sm">support@shopnow.com</span>
               </li>
               <li>
-                <span className="text-sm">+254 700 000 000</span>
+                <a
+                  href="https://wa.me/254706270921"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm hover:text-white transition-colors"
+                >
+                  +254 706 270921
+                </a>
               </li>
               <li className="flex items-center gap-3 pt-2">
                 <a href="#" className="hover:text-white transition-colors">
@@ -67,7 +74,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-10 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
-          <p>&copy; {new Date().getFullYear()} ShopNow. All rights reserved.</p>
+          <p className="font-bold">Made with ❤️ by P.o.Riot🍄</p>
         </div>
       </div>
     </footer>
